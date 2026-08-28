@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Copyright — Void of Vanguards</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base:        #0d0d0f;
+      --bg-surface:     #13131a;
+      --bg-border:      #1e1e2e;
+      --accent-red:     #cc2200;
+      --accent-cyan:    #00c8d4;
+      --text-primary:   #e8e8f0;
+      --text-muted:     #6b6b80;
+      --text-heading:   #f0f0fa;
+      --font-display:   'Orbitron', sans-serif;
+      --font-body:      'Inter', sans-serif;
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --radius: 6px;
+      --transition: 0.2s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 13, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-brand img {
+      height: 30px;
+      width: 30px;
+      object-fit: contain;
+    }
+
+    .nav-brand-name {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav-sep { color: var(--bg-border); margin: 0 0.3rem; }
+
+    .nav-game {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav-page {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-heading);
+      text-transform: uppercase;
+    }
+
+    /* PAGE WRAP */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    /* HEADER */
+    .doc-header {
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .doc-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-heading);
+      margin-bottom: var(--space-xs);
+    }
+
+    .doc-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* CONTENT */
+    .doc-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .doc-highlight {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text-heading);
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-border);
+      border-left: 3px solid var(--accent-red);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius);
+    }
+
+    .doc-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+    }
+
+    .doc-text a {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .doc-text a:hover { color: var(--text-primary); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--bg-border);
+      padding: var(--space-lg) var(--space-md);
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      text-align: center;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-legal a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-legal a:hover { color: var(--text-primary); }
+
+    .footer-legal a.active { color: var(--accent-cyan); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 640px) {
+      .nav-game, .nav-sep + .nav-sep { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <a href="../../../home.html">
+          <img src="../../../images/logo_OG.png" alt="Void Works" />
+        </a>
+        <a href="../../../home.html"><span class="nav-brand-name">Void Works</span></a>
+        <span class="nav-sep">/</span>
+        <a href="../void_of_vanguards_web.html"><span class="nav-game">Void of Vanguards</span></a>
+        <span class="nav-sep">/</span>
+        <span class="nav-page">Copyright</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <div class="doc-header">
+      <p class="doc-label">Legal</p>
+      <h1 class="doc-title">Copyright</h1>
+      <p class="doc-subtitle">Void of Vanguards &nbsp;·&nbsp; Void Works</p>
+    </div>
+
+    <div class="doc-body">
+
+      <p class="doc-highlight">Copyright &copy; 2026 Void Works. All Rights Reserved.</p>
+
+      <p class="doc-text">
+        Void of Vanguards and all associated content, including but not limited to its source code,
+        artwork, music, sound effects, text, user interface, animations, and other original creative
+        content, are the intellectual property of Void Works and are protected by international
+        copyright laws.
+      </p>
+
+      <p class="doc-text">
+        This software is provided under a closed-source proprietary license. Unauthorized copying,
+        reproduction, distribution, resale, or modification of the game, in whole or in part, is
+        strictly prohibited. The game may only be obtained through official channels as provided by
+        Void Works. Unauthorized distribution or resale of this game may violate applicable
+        intellectual property laws and may result in legal action.
+      </p>
+
+      <p class="doc-text">
+        <strong style="color: var(--text-primary);">Third-Party Assets:</strong>
+        This game contains external assets that are used under appropriate licenses.
+        For more information and credits related to third-party content, see the
+        <a href="credits.html">Credits</a> page.
+      </p>
+
+      <p class="doc-text">
+        This game uses Google AdMob for advertising services. Google AdMob is a trademark of Google LLC.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="copyright.html" class="active">Copyright</a>
+      <a href="credits.html">Credits</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Void Works. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

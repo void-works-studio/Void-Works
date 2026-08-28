@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Void of Vanguards — Void Works</title>
+  <meta name="description" content="A fast-paced top-down sci-fi space shooter where survival is your only mission." />
+
+  <!--
+    FONTS — swap in CSS variables below if you want different fonts
+    --font-display : headings
+    --font-body    : body text
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+    ============================================= */
+    :root {
+      --bg-base:        #0d0d0f;
+      --bg-surface:     #13131a;
+      --bg-border:      #1e1e2e;
+
+      --accent-red:     #cc2200;
+      --accent-red-dim: #7a1500;
+      --accent-cyan:    #00c8d4;
+      --accent-cyan-dim:#007d85;
+
+      --text-primary:   #e8e8f0;
+      --text-muted:     #6b6b80;
+      --text-heading:   #f0f0fa;
+
+      --font-display:   'Orbitron', sans-serif;
+      --font-body:      'Inter', sans-serif;
+
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --space-xl:  7rem;
+
+      --radius: 6px;
+      --transition: 0.2s ease;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* =============================================
+       NAV
+    ============================================= */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 13, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-brand img {
+      height: 32px;
+      width: 32px;
+      object-fit: contain;
+    }
+
+    .nav-brand-name {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav-brand-sep {
+      color: var(--bg-border);
+      margin: 0 0.3rem;
+    }
+
+    .nav-brand-game {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-heading);
+      text-transform: uppercase;
+    }
+
+    /* =============================================
+       HERO — full-width banner
+    ============================================= */
+    .hero {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .hero-banner {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Dark gradient overlay at the bottom so text reads cleanly */
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background: linear-gradient(to top, var(--bg-base) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: var(--space-md);
+      left: var(--space-md);
+      right: var(--space-md);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* For large screens, center the inner content */
+    @media (min-width: 1100px) {
+      .hero-content {
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 var(--space-md);
+      }
+    }
+
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-heading);
+      line-height: 1.15;
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent-red);
+      color: #fff;
+      border-color: var(--accent-red);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-red-dim);
+      border-color: var(--accent-red-dim);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--bg-border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+
+    /* =============================================
+       WRAPPER
+    ============================================= */
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* =============================================
+       QUICK INFO BAR
+    ============================================= */
+    .info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm) var(--space-md);
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--bg-border);
+      margin-bottom: var(--space-lg);
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .info-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .info-value {
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .info-value .tag-pill {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.55rem;
+      border: 1px solid var(--bg-border);
+      border-radius: 2px;
+      color: var(--text-muted);
+      margin-right: 0.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    /* =============================================
+       SECTION COMMON
+    ============================================= */
+    .section {
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: var(--space-md);
+      letter-spacing: 0.06em;
+    }
+
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--bg-border);
+      margin-bottom: var(--space-md);
+    }
+
+    /* =============================================
+       TAGLINE
+    ============================================= */
+    .tagline {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      border-left: 3px solid var(--accent-red);
+      padding-left: var(--space-sm);
+      margin-bottom: var(--space-md);
+      font-style: italic;
+    }
+
+    .lead-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: var(--space-sm);
+    }
+
+    /* =============================================
+       FEATURE GRID
+    ============================================= */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-border);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      transition: border-color var(--transition);
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent-cyan-dim);
+    }
+
+    .feature-card-title {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    /* =============================================
+      TRAILER & GIF GRID
+    ============================================= */
+    .trailer-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--bg-border);
+      margin-bottom: var(--space-md);
+    }
+
+    .trailer-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+    }
+
+    .gif-item {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--bg-border);
+      object-fit: contain;
+      display: block;
+    }
+    /* =============================================
+       SCREENSHOTS
+    ============================================= */
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .screenshot-placeholder {
+      background: var(--bg-surface);
+      border: 1px dashed var(--bg-border);
+      border-radius: var(--radius);
+      aspect-ratio: 9 / 16;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .screenshot-placeholder span {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Once you have real screenshots, replace .screenshot-placeholder with:
+       <img src="../../images/vov-screenshot-1.png" alt="..." class="screenshot-img" />
+       and add this class: */
+    .screenshot-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--bg-border);
+      object-fit: contain;
+    }
+
+    /* =============================================
+       PLANNED CONTENT LIST
+    ============================================= */
+    .planned-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .planned-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .planned-list li::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       STATUS BADGE
+    ============================================= */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-border);
+      border-radius: 2px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: var(--space-md);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* =============================================
+       CLOSING LINE
+    ============================================= */
+    .closing {
+      text-align: center;
+      padding: var(--space-lg) var(--space-md);
+      border-top: 1px solid var(--bg-border);
+      margin-top: var(--space-lg);
+    }
+
+    .closing-text {
+      font-family: var(--font-display);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .closing-text em {
+      color: var(--accent-cyan);
+      font-style: normal;
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      border-top: 1px solid var(--bg-border);
+      padding: var(--space-lg) var(--space-md);
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      text-align: center;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .footer-brand img {
+      height: 26px;
+      width: 26px;
+      object-fit: contain;
+      opacity: 0.6;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-socials a {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .footer-socials a:hover { color: var(--text-primary); }
+
+    .footer-socials a::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--bg-border);
+      transition: background var(--transition);
+    }
+
+    .footer-socials a:hover::before { background: var(--accent-cyan); }
+
+    .footer-legal {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-legal a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-legal a:hover { color: var(--text-primary); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 640px) {
+      .hero-content { position: relative; bottom: auto; padding: var(--space-md) 0 0; }
+      .hero-overlay  { display: none; }
+      .info-bar      { flex-direction: column; gap: var(--space-sm); }
+      .hero-actions  { flex-direction: column; }
+      .btn           { width: 100%; justify-content: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, .status-dot { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../../home.html" class="nav-brand">
+        <img src="../../images/logo_OG.png" alt="Void Works logo" />
+        <span class="nav-brand-name">Void Works</span>
+        <span class="nav-brand-sep">/</span>
+        <span class="nav-brand-game">Void of Vanguards</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── HERO — full banner ─────────────────────── -->
+  <div class="hero">
+    <!--
+      ASSET: VoV banner
+      Path from this file's location: ../../images/vov_banner.png
+    -->
+    <img
+      class="hero-banner"
+      src="../../images/vov_banner.png"
+      alt="Void of Vanguards"
+    />
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content page-wrap">
+      <p class="hero-label">Android &nbsp;·&nbsp; Arcade Shooter</p>
+      <h1 class="hero-title">Void of Vanguards</h1>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://void-works.itch.io/void-of-vanguards" target="_blank" rel="noopener">
+          Download on itch.io
+        </a>
+        <!--
+          Google Play button — uncomment and add your URL when live:
+          <a class="btn btn-outline" href="YOUR_PLAY_STORE_URL" target="_blank" rel="noopener">Google Play</a>
+        -->
+        <a class="btn btn-outline" href="legal/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN CONTENT ───────────────────────────── -->
+  <div class="page-wrap">
+
+    <!-- Quick info bar -->
+    <div class="info-bar">
+      <div class="info-item">
+        <span class="info-label">Platform</span>
+        <span class="info-value">Android</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Genre</span>
+        <span class="info-value">Action, Shooter</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Price</span>
+        <span class="info-value">Free</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Status</span>
+        <span class="info-value">In Development</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Tags</span>
+        <span class="info-value">
+          <span class="tag-pill">2D</span>
+          <span class="tag-pill">Endless</span>
+          <span class="tag-pill">Sci-Fi</span>
+          <span class="tag-pill">Top-Down</span>
+          <span class="tag-pill">Shoot 'Em Up</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="section">
+      <p class="section-label">About</p>
+      <h2 class="section-title">Void of Vanguards</h2>
+      <hr class="section-rule" />
+
+      <p class="tagline">
+        A fast-paced top-down sci-fi space shooter where survival is your only mission.
+      </p>
+
+      <p class="lead-text">
+        Fight your way through endless waves of hostile forces, experiment with powerful weapons,
+        unleash devastating active skills, and push your limits in an ever-escalating battle for survival.
+      </p>
+      <p class="lead-text">
+        Every run is an opportunity to improve your strategy, master new combinations,
+        and set a new personal best.
+      </p>
+    </div>
+
+    <!-- Features -->
+    <div class="section">
+      <p class="section-label">Gameplay</p>
+      <h2 class="section-title">Features</h2>
+      <hr class="section-rule" />
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-title">Fast-Paced Combat</div>
+          <p class="feature-card-desc">Fluid, responsive gameplay built around quick decision-making. Outmaneuver relentless enemies, dodge incoming attacks, and rely on quick reflexes to survive the ever-growing chaos of the Void.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Distinct Space Ships</div>
+          <p class="feature-card-desc">Pilot a variety of unique spacecraft, each with its own stat distribution, exclusive Active Skill, and Passive Skill. Choose the ship that best fits your strategy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Unique Projectiles</div>
+          <p class="feature-card-desc">Discover and master a variety of projectile types, each with its own strengths, weaknesses, and gameplay style. No two projectiles feel exactly alike.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Various Modulators</div>
+          <p class="feature-card-desc">Enhance your projectiles with powerful Modulators that alter their behavior and unlock new combat possibilities. Experiment to create a build that matches your playstyle.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Powerful Active Skills</div>
+          <p class="feature-card-desc">Turn the tide of battle with powerful abilities that can save you from impossible situations or maximize your offensive potential.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Mythical Attachments</div>
+          <p class="feature-card-desc">Rare attachments that grant extraordinary enhancements beyond standard upgrades. Collect them to transform your combat capabilities and push your game to its true potential.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Global Leaderboards</div>
+          <p class="feature-card-desc">Climb the global rankings by surviving longer, destroying more enemies, and achieving higher scores. Compete with players worldwide and prove you are the ultimate Vanguard.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Upgrade Cards</div>
+          <p class="feature-card-desc">Shape every run with Upgrade Cards that appear throughout each run. Choose from a variety of powerful upgrades to adapt to new challenges and create unique builds.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Progressive Achievements</div>
+          <p class="feature-card-desc">Take on a wide variety of challenges and unlock achievements by reaching milestones, mastering different mechanics, and proving your skills throughout your journey.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Detailed Statistics</div>
+          <p class="feature-card-desc">Monitor your progress with detailed gameplay statistics — high scores, survival time, enemies destroyed, streaks, and other performance metrics to track your improvement over time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Multiple Game Modes</div>
+          <p class="feature-card-desc">Take on a variety of game modes, each with unique objectives, mechanics, and challenges. Every mode delivers a fresh way to experience the Void.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-title">Easy to Learn, Hard to Master</div>
+          <p class="feature-card-desc">Simple controls make it easy to jump in, while mastering every weapon and surviving the late game will put your skills to the real test.</p>
+        </div>
+      </div>
+    </div>
+    <!-- ── TRAILER & MEDIA ─────────────────────────── -->
+    <div class="section">
+      <p class="section-label">Media</p>
+      <h2 class="section-title">Trailer & Gameplay</h2>
+      <hr class="section-rule" />
+
+      <!-- Trailer -->
+      <div class="trailer-wrap">
+        <iframe
+          class="trailer-frame"
+          src="https://www.youtube.com/embed/ud7Z2M_Xm7s"
+          title="Void of Vanguards — Trailer"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <!-- GIF grid -->
+      <!--
+        Add or remove <img> entries freely.
+        The grid always lays them out 2 per row automatically.
+        Naming: images/vov-gif-1.gif, vov-gif-2.gif, etc.
+      -->
+      <div class="gif-grid">
+        <img src="../../images/vov-gif-1.gif" alt="Gameplay clip 1" class="gif-item" />
+        <img src="../../images/vov-gif-2.gif" alt="Gameplay clip 2" class="gif-item" />
+        <img src="../../images/vov-gif-3.gif" alt="Gameplay clip 3" class="gif-item" />
+        <img src="../../images/vov-gif-4.gif" alt="Gameplay clip 4" class="gif-item" />
+      </div>
+
+    </div>
+    <!-- Screenshots -->
+    <div class="section">
+      <p class="section-label">Gallery</p>
+      <h2 class="section-title">Screenshots</h2>
+      <hr class="section-rule" />
+
+      <!--
+        TO REPLACE PLACEHOLDERS:
+        Remove the .screenshot-placeholder divs and use:
+        <img src="../../images/vov-screenshot-1.png" alt="Screenshot 1" class="screenshot-img" />
+        inside the .screenshots-grid
+      -->
+      <div class="gif-grid">
+        <img src="../../images/vov-screenshot-1.png" alt="Screenshot 1" class="screenshot-img" />
+        <img src="../../images/vov-screenshot-2.png" alt="Screenshot 1" class="screenshot-img" />
+        <img src="../../images/vov-screenshot-3.png" alt="Screenshot 1" class="screenshot-img" />
+        <img src="../../images/vov-screenshot-4.png" alt="Screenshot 1" class="screenshot-img" />
+        <img src="../../images/vov-screenshot-5.png" alt="Screenshot 1" class="screenshot-img" />
+        <img src="../../images/vov-screenshot-6.png" alt="Screenshot 1" class="screenshot-img" />
+      </div>
+    </div>
+
+    <!-- Development status -->
+    <div class="section">
+      <p class="section-label">Status</p>
+      <h2 class="section-title">Development</h2>
+      <hr class="section-rule" />
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Active Development
+      </div>
+
+      <p class="lead-text">
+        Void of Vanguards is continuously receiving improvements, balancing updates, polish,
+        new content, and quality-of-life features. Player feedback plays an important role
+        in shaping future updates.
+      </p>
+    </div>
+
+    <!-- Planned content -->
+    <div class="section">
+      <p class="section-label">Roadmap</p>
+      <h2 class="section-title">Planned Content</h2>
+      <hr class="section-rule" />
+
+      <ul class="planned-list">
+        <li>More unique projectile types</li>
+        <li>Additional space ships</li>
+        <li>New enemy varieties</li>
+        <li>Challenging boss encounters</li>
+        <li>Improved visual and audio effects</li>
+        <li>Expanded progression systems</li>
+        <li>General gameplay polish and balancing</li>
+      </ul>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <!-- ── CLOSING LINE ────────────────────────────── -->
+  <div class="closing">
+    <p class="closing-text">See you in the Void, <em>Vanguard.</em></p>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────── -->
+  <footer>
+    <div class="footer-brand">
+      <img src="../../images/logo_OG.png" alt="Void Works" />
+      <span class="footer-brand-name">Void Works</span>
+    </div>
+
+    <div class="footer-socials">
+      <a href="https://void-works.itch.io/" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://x.com/void_works_" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="https://www.youtube.com/@Void_Works" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.reddit.com/user/VoidWorks001/" target="_blank" rel="noopener">Reddit</a>
+    </div>
+
+    <div class="footer-legal">
+      <a href="legal/privacy.html">Privacy Policy</a>
+      <a href="legal/terms.html">Terms of Service</a>
+      <a href="legal/copyright.html">Copyright</a>
+      <a href="legal/credits.html">Credits</a>
+    </div>
+
+    <p class="footer-copy">&copy; 2026 Void Works. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

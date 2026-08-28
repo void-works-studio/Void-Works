@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Void of Vanguards</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base:        #0d0d0f;
+      --bg-surface:     #13131a;
+      --bg-border:      #1e1e2e;
+      --accent-red:     #cc2200;
+      --accent-cyan:    #00c8d4;
+      --text-primary:   #e8e8f0;
+      --text-muted:     #6b6b80;
+      --text-heading:   #f0f0fa;
+      --font-display:   'Orbitron', sans-serif;
+      --font-body:      'Inter', sans-serif;
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --radius: 6px;
+      --transition: 0.2s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 13, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-brand img {
+      height: 30px;
+      width: 30px;
+      object-fit: contain;
+    }
+
+    .nav-brand-name {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav-sep { color: var(--bg-border); margin: 0 0.3rem; }
+    .nav-game {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .nav-page {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-heading);
+      text-transform: uppercase;
+    }
+
+    /* PAGE WRAP */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    /* HEADER */
+    .doc-header {
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .doc-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-heading);
+      margin-bottom: var(--space-xs);
+    }
+
+    .doc-meta {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      margin-top: var(--space-xs);
+    }
+
+    .doc-meta-item {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .doc-meta-item span {
+      color: var(--text-primary);
+    }
+
+    /* INTRO */
+    .doc-intro {
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-border);
+      border-left: 3px solid var(--accent-red);
+      border-radius: var(--radius);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+      line-height: 1.8;
+    }
+
+    /* SECTIONS */
+    .tos-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    .tos-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .tos-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .tos-section-num {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      color: var(--accent-red);
+    }
+
+    .tos-section-title {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-heading);
+    }
+
+    .tos-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+    }
+
+    .tos-text a {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .tos-text a:hover { color: var(--text-primary); }
+
+    .tos-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding-left: var(--space-sm);
+    }
+
+    .tos-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    .tos-list li::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+    }
+
+    /* FOOTER NOTES */
+    .doc-footer-notes {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--bg-border);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .doc-footer-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--bg-border);
+      padding: var(--space-lg) var(--space-md);
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      text-align: center;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-legal a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-legal a:hover { color: var(--text-primary); }
+    .footer-legal a.active { color: var(--accent-cyan); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <a href="../../../home.html">
+          <img src="../../../images/logo_OG.png" alt="Void Works" />
+        </a>
+        <a href="../../../home.html"><span class="nav-brand-name">Void Works</span></a>
+        <span class="nav-sep">/</span>
+        <a href="../void_of_vanguards_web.html"><span class="nav-game">Void of Vanguards</span></a>
+        <span class="nav-sep">/</span>
+        <span class="nav-page">Terms of Service</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <div class="doc-header">
+      <p class="doc-label">Legal</p>
+      <h1 class="doc-title">Terms of Service</h1>
+      <div class="doc-meta">
+        <div class="doc-meta-item">Game: <span>Void of Vanguards</span></div>
+        <div class="doc-meta-item">Studio: <span>Void Works</span></div>
+        <div class="doc-meta-item">Last Updated: <span>17/07/2026</span></div>
+      </div>
+    </div>
+
+    <div class="doc-intro">
+      By downloading, installing, or playing Void of Vanguards, you agree to the following
+      Terms of Service. If you do not agree with any of the terms, do not install or play this game.
+    </div>
+
+    <div class="tos-body">
+
+      <!-- 1 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">01</span>
+          <span class="tos-section-title">Scope of Use</span>
+        </div>
+        <ul class="tos-list">
+          <li>Void of Vanguards is a commercial game available on authorized official platforms including, but not limited to, itch.io. Users must obtain the game through these authorized channels.</li>
+          <li>Streaming or recording gameplay of Void of Vanguards is permitted and highly encouraged. Streaming serves as a form of marketing, and we appreciate your efforts to showcase the game.</li>
+          <li>Any unauthorized distribution of the game outside of these platforms is strictly prohibited.</li>
+        </ul>
+      </div>
+
+      <!-- 2 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">02</span>
+          <span class="tos-section-title">User Behavior</span>
+        </div>
+        <ul class="tos-list">
+          <li>Void of Vanguards is a single-player game. The game includes an online global leaderboard feature, which allows players to submit and view high scores. Players are expected to engage with this feature in good faith. Any attempt to manipulate, exploit, or falsify leaderboard scores is strictly prohibited and may result in removal from the leaderboard.</li>
+          <li>Void Works reserves the right to remove leaderboard entries determined to be fraudulent or obtained through exploits.</li>
+        </ul>
+      </div>
+
+      <!-- 3 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">03</span>
+          <span class="tos-section-title">Online Features</span>
+        </div>
+        <p class="tos-text">
+          Void of Vanguards includes an online global leaderboard that tracks and displays player
+          high scores. To support this feature, the game transmits a randomly generated anonymous
+          identifier along with score data to our leaderboard service provider (Microsoft PlayFab).
+          No personally identifiable information such as your name, email, or device details is
+          knowingly collected or stored. Additional online features may be introduced in future
+          updates, and this section will be updated accordingly.
+        </p>
+      </div>
+
+      <!-- 4 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">04</span>
+          <span class="tos-section-title">Privacy &amp; Advertising</span>
+        </div>
+        <p class="tos-text">
+          Void of Vanguards uses Google AdMob to display advertisements. By playing this game,
+          you acknowledge that Google AdMob may collect and process the following types of data:
+        </p>
+        <ul class="tos-list">
+          <li>Device identifiers (such as Advertising ID)</li>
+          <li>IP address and approximate location</li>
+          <li>App usage and interaction data</li>
+        </ul>
+        <p class="tos-text">
+          This data is used by Google to serve personalized or non-personalized advertisements
+          depending on your device settings and region. We do not directly access, store, or sell
+          any of this data. To opt out of personalized ads, you can adjust your device's ad
+          personalization settings in your device's privacy or Google settings.
+        </p>
+        <p class="tos-text">
+          For users in regions covered by data protection laws such as GDPR (European Union) or
+          CCPA (California, USA), Google AdMob provides tools to support compliance with applicable
+          privacy regulations. For full details, refer to
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.
+        </p>
+      </div>
+
+      <!-- 5 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">05</span>
+          <span class="tos-section-title">Refund Policy</span>
+        </div>
+        <ul class="tos-list">
+          <li>Refunds are subject to the refund policies of the platform through which the game was purchased. In exceptional cases involving significant technical issues, we may assist users in accordance with the platform's policies.</li>
+          <li>No refunds will be provided for any in-game purchases, including microtransactions, unless a technical error prevents access to the purchased content.</li>
+          <li>Refund requests should be submitted through the platform where the game was purchased, in accordance with their respective refund policies.</li>
+        </ul>
+      </div>
+
+      <!-- 6 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">06</span>
+          <span class="tos-section-title">Updates &amp; Modifications</span>
+        </div>
+        <ul class="tos-list">
+          <li>Regular updates and modifications will be made to improve gameplay, fix bugs, and introduce new features.</li>
+          <li>While updates are not mandatory, playing on the latest available version is strongly recommended for the best experience. Older versions of the game may not have access to the latest features or bug fixes.</li>
+          <li>Updates will be rolled out through the official platforms where the game is distributed.</li>
+        </ul>
+      </div>
+
+      <!-- 7 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">07</span>
+          <span class="tos-section-title">Termination of Service</span>
+        </div>
+        <ul class="tos-list">
+          <li>As the core gameplay of Void of Vanguards is available offline, users will retain access to the game even if online services such as leaderboards or advertisements are discontinued.</li>
+          <li>No user access will be terminated unless deemed necessary by platform policies.</li>
+        </ul>
+      </div>
+
+      <!-- 8 -->
+      <div class="tos-section">
+        <div class="tos-section-header">
+          <span class="tos-section-num">08</span>
+          <span class="tos-section-title">In-Game Purchases</span>
+        </div>
+        <ul class="tos-list">
+          <li>Void of Vanguards includes in-game purchases and microtransactions. By making an in-game purchase, you agree to the terms related to digital goods. All purchases are final and non-refundable unless a technical issue prevents access to the purchased content.</li>
+          <li>Users are responsible for verifying their purchases before completing transactions. Refunds will not be granted for accidental purchases.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer notes -->
+    <div class="doc-footer-notes">
+      <p class="doc-footer-note">This document may be updated periodically to reflect changes in the game or policies. Please review these terms regularly.</p>
+      <p class="doc-footer-note">If you have any questions or concerns, feel free to contact us via the support channels listed in the game.</p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html" class="active">Terms of Service</a>
+      <a href="copyright.html">Copyright</a>
+      <a href="credits.html">Credits</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Void Works. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
